@@ -12,48 +12,32 @@
   | See the License for the specific language governing permissions and      |
   | limitations under the License. See accompanying LICENSE file.            |
   +--------------------------------------------------------------------------+
-  | Author: Twosee <twosee@php.net>                                          |
+  | Author: Twosee <twose@qq.com>                                            |
   +--------------------------------------------------------------------------+
  */
 
-#ifndef CAT_API_H
-#define CAT_API_H
+#ifndef CAT_PROCESS_H
+#define CAT_PROCESS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include "cat.h"
-#include "cat_coroutine.h"
-#include "cat_channel.h"
-#include "cat_sync.h"
-#include "cat_event.h"
-#include "cat_time.h"
-#include "cat_socket.h"
-#include "cat_dns.h"
-#include "cat_work.h"
-#include "cat_buffer.h"
-#include "cat_fs.h"
-#include "cat_signal.h"
-#include "cat_process.h"
-#include "cat_ssl.h"
 
-typedef enum
-{
-    CAT_RUN_EASY = 0,
-} cat_run_mode;
+typedef uv_pid_t cat_pid_t;
 
-CAT_API cat_bool_t cat_init_all(void);
-CAT_API cat_bool_t cat_shutdown_all(void);
-CAT_API cat_bool_t cat_run(cat_run_mode run_mode);
-CAT_API void cat_stop(void);
+CAT_API cat_pid_t cat_process_get_id(void);
+CAT_API cat_pid_t cat_process_get_parent_id(void);
 
-#ifdef CAT_DEBUG
-CAT_API void cat_enable_debug_mode(void);
-#else
-#define cat_enable_debug_mode()
-#endif
+/* it may take ownership of the memory that argv points to */
+CAT_API char **cat_process_setup_args(int argc, char** argv);
+
+#define CAT_PROCESS_TITLE_BUFFER_SIZE 512
+/* we must call process_setup_args() before using title releated APIs  */
+CAT_API char *cat_process_get_title(char* buffer, size_t size); CAT_MAY_FREE
+CAT_API cat_bool_t cat_process_set_title(const char* title);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* CAT_API_H */
+#endif  /* CAT_PROCESS_H */

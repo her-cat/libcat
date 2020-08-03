@@ -51,13 +51,13 @@ TEST(cat_event, defer)
 TEST(cat_event, dead_lock)
 {
     ASSERT_DEATH_IF_SUPPORTED([] {
-        auto t = std::thread([&](pid_t pid) {
+        auto t = std::thread([&](cat_pid_t pid) {
 #ifdef CAT_OS_UNIX_LIKE
             sched_yield();
 #endif
             std::this_thread::sleep_for(std::chrono::milliseconds(!is_valgrind() ? 1 : 100));
             cat_kill(pid, CAT_SIGTERM);
-        }, getpid() /* TODO: cat_getpid() */);
+        }, cat_process_get_id());
         DEFER(t.join());
         cat_coroutine_yield_ez();
     }(), "Dead lock");

@@ -12,48 +12,34 @@
   | See the License for the specific language governing permissions and      |
   | limitations under the License. See accompanying LICENSE file.            |
   +--------------------------------------------------------------------------+
-  | Author: Twosee <twosee@php.net>                                          |
+  | Author: Twosee <twose@qq.com>                                            |
   +--------------------------------------------------------------------------+
  */
 
-#ifndef CAT_API_H
-#define CAT_API_H
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "test.h"
 
-#include "cat.h"
-#include "cat_coroutine.h"
-#include "cat_channel.h"
-#include "cat_sync.h"
-#include "cat_event.h"
-#include "cat_time.h"
-#include "cat_socket.h"
-#include "cat_dns.h"
-#include "cat_work.h"
-#include "cat_buffer.h"
-#include "cat_fs.h"
-#include "cat_signal.h"
-#include "cat_process.h"
-#include "cat_ssl.h"
-
-typedef enum
+TEST(cat_process, get_id)
 {
-    CAT_RUN_EASY = 0,
-} cat_run_mode;
-
-CAT_API cat_bool_t cat_init_all(void);
-CAT_API cat_bool_t cat_shutdown_all(void);
-CAT_API cat_bool_t cat_run(cat_run_mode run_mode);
-CAT_API void cat_stop(void);
-
-#ifdef CAT_DEBUG
-CAT_API void cat_enable_debug_mode(void);
-#else
-#define cat_enable_debug_mode()
-#endif
-
-#ifdef __cplusplus
+    ASSERT_GT(cat_process_get_id(), 0);
 }
-#endif
-#endif /* CAT_API_H */
+
+TEST(cat_process, get_parent_id)
+{
+    ASSERT_GT(cat_process_get_parent_id(), 0);
+}
+
+TEST(cat_process, title)
+{
+    const std::string custom_title = "cat_test";
+    bool titled = cat_process_set_title(custom_title.c_str());
+    char *process_title;
+
+    process_title = cat_process_get_title(NULL, 0);
+    ASSERT_NE(process_title, nullptr);
+    DEFER(cat_free(process_title));
+
+    if (titled) {
+        ASSERT_EQ(custom_title, std::string(process_title));
+    }
+}
+

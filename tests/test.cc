@@ -55,9 +55,13 @@ public:
 
 int main(int argc, char *argv[])
 {
+    /* it may take ownership of the memory that argv points to */
+    argv = cat_process_setup_args(argc, argv);
+
     ::testing::FLAGS_gtest_death_test_style = "threadsafe";
     ::testing::AddGlobalTestEnvironment(new BootstrapEnvironment);
     ::testing::InitGoogleTest(&argc, argv);
+
     return RUN_ALL_TESTS();
 }
 
