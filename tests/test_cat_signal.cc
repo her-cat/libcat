@@ -30,7 +30,7 @@ TEST(cat_signal, wait)
 
         co([&, signum] {
             cat_time_sleep(0);
-            EXPECT_TRUE(cat_kill(cat_process_get_id(), signum));
+            EXPECT_TRUE(cat_kill(cat_getpid(), signum));
             EXPECT_FALSE(wait_done);
             killed = true;
         });
@@ -55,7 +55,7 @@ TEST(cat_signal, wait_multi)
         });
     }
 
-    EXPECT_TRUE(cat_kill(cat_process_get_id(), CAT_SIGUSR1));
+    EXPECT_TRUE(cat_kill(cat_getpid(), CAT_SIGUSR1));
     EXPECT_TRUE(cat_time_wait(TEST_IO_TIMEOUT));
     EXPECT_EQ(TEST_MAX_CONCURRENCY, count);
 }

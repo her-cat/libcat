@@ -20,12 +20,12 @@
 
 TEST(cat_process, get_id)
 {
-    ASSERT_GT(cat_process_get_id(), 0);
+    ASSERT_GT(cat_getpid(), 0);
 }
 
 TEST(cat_process, get_parent_id)
 {
-    ASSERT_GT(cat_process_get_parent_id(), 0);
+    ASSERT_GT(cat_getppid(), 0);
 }
 
 TEST(cat_process, title)

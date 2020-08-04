@@ -26,8 +26,8 @@ extern "C" {
 
 typedef uv_pid_t cat_pid_t;
 
-CAT_API cat_pid_t cat_process_get_id(void);
-CAT_API cat_pid_t cat_process_get_parent_id(void);
+CAT_API cat_pid_t cat_getpid(void);
+CAT_API cat_pid_t cat_getppid(void);
 
 /* it may take ownership of the memory that argv points to */
 CAT_API char **cat_process_setup_args(int argc, char** argv);

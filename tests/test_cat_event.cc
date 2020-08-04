@@ -57,7 +57,7 @@ TEST(cat_event, dead_lock)
 #endif
             std::this_thread::sleep_for(std::chrono::milliseconds(!is_valgrind() ? 1 : 100));
             cat_kill(pid, CAT_SIGTERM);
-        }, cat_process_get_id());
+        }, cat_getpid());
         DEFER(t.join());
         cat_coroutine_yield_ez();
     }(), "Dead lock");

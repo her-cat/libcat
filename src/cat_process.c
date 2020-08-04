@@ -18,30 +18,30 @@
 
 #include "cat_process.h"
 
-CAT_API cat_pid_t cat_process_get_id(void)
+CAT_API cat_pid_t cat_getpid(void)
 {
-    cat_pid_t id;
+    cat_pid_t pid;
 
-    id = uv_os_getpid();
+    pid = uv_os_getpid();
 
-    if (unlikely(id < 0)) {
+    if (unlikely(pid < 0)) {
         cat_update_last_error_of_syscall("Process get id failed");
     }
 
-    return id;
+    return pid;
 }
 
-CAT_API cat_pid_t cat_process_get_parent_id(void)
+CAT_API cat_pid_t cat_getppid(void)
 {
-    cat_pid_t parent_id;
+    cat_pid_t ppid;
 
-    parent_id = uv_os_getppid();
+    ppid = uv_os_getppid();
 
-    if (unlikely(parent_id < 0)) {
+    if (unlikely(ppid < 0)) {
         cat_update_last_error_of_syscall("Process get parent id failed");
     }
 
-    return parent_id;
+    return ppid;
 }
 
 static cat_bool_t cat_process_args_resgitered = cat_false;
